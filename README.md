@@ -12,7 +12,9 @@ vLLM Judge provides a complete framework for leveraging any LLM hosted on vLLM a
 ## Installation
 
 ```bash
-pip install vllm-judge
+git clone git@github.com:saichandrapandraju/vllm-judge.git
+cd lls-explanation-reference
+pip install -e .
 ```
 
 ## Progressive Usage Guide: From Beginner to Expert
