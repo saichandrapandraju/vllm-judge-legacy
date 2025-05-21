@@ -1,0 +1,269 @@
+{
+  "templates": {
+    "binary_classification": {
+      "template_id": "binary_classification",
+      "template_name": "Binary Classification",
+      "target_judge_model_family": null,
+      "description": "Template for binary classification tasks (yes/no, safe/unsafe, etc.)",
+      "prompt_structure": {
+        "system_message": "You are an expert evaluator. Your task is to analyze the given content and make a binary classification decision based on the provided criteria.",
+        "user_instruction_prefix": "Please evaluate the following content based on these criteria:\n\n{evaluation_criteria}\n\nContent to evaluate:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "binary",
+        "positive_patterns": [
+          "yes",
+          "true",
+          "safe",
+          "positive",
+          "acceptable"
+        ],
+        "negative_patterns": [
+          "no",
+          "false",
+          "unsafe",
+          "negative",
+          "unacceptable"
+        ]
+      }
+    },
+    "likert_scale": {
+      "template_id": "likert_scale",
+      "template_name": "Likert Scale Evaluation",
+      "target_judge_model_family": null,
+      "description": "Template for Likert scale evaluations (rating on a scale, e.g., 1-5)",
+      "prompt_structure": {
+        "system_message": "You are an expert evaluator. Your task is to rate the given content on a scale based on the provided criteria.",
+        "user_instruction_prefix": "Please evaluate the following content based on these criteria:\n\n{evaluation_criteria}\n\nContent to evaluate:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "numeric",
+        "pattern": "\\b([1-5])\\b"
+      }
+    },
+    "pairwise_comparison": {
+      "template_id": "pairwise_comparison",
+      "template_name": "Pairwise Comparison",
+      "target_judge_model_family": null,
+      "description": "Template for comparing two texts and selecting the better one",
+      "prompt_structure": {
+        "system_message": "You are an expert evaluator. Your task is to compare two texts and select the better one based on the provided criteria.",
+        "user_instruction_prefix": "Please compare the following two texts based on these criteria:\n\n{comparison_criteria}\n\nText A:\n\n{text_A}\n\nText B:\n\n{text_B}\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "preference",
+        "pattern": "(?:(?:Text|Option|Response)\\s*)?([AB])"
+      }
+    },
+    "toxicity_detection": {
+      "template_id": "toxicity_detection",
+      "template_name": "Toxicity Detection",
+      "target_judge_model_family": null,
+      "description": "Template for detecting toxic content in text",
+      "prompt_structure": {
+        "system_message": "You are a content moderation expert. Your task is to analyze the given text for toxic or harmful content.",
+        "user_instruction_prefix": "Please analyze the following text for toxic or harmful content based on these criteria:\n\n{evaluation_criteria}\n\nContent to analyze:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "binary",
+        "positive_patterns": [
+          "toxic",
+          "harmful",
+          "inappropriate",
+          "unsafe"
+        ],
+        "negative_patterns": [
+          "non-toxic",
+          "safe",
+          "appropriate",
+          "acceptable"
+        ]
+      }
+    },
+    "factual_accuracy": {
+      "template_id": "factual_accuracy",
+      "template_name": "Factual Accuracy Check",
+      "target_judge_model_family": null,
+      "description": "Template for evaluating the factual accuracy of a text against a reference",
+      "prompt_structure": {
+        "system_message": "You are a fact-checking expert. Your task is to evaluate the factual accuracy of the given text compared to the reference information.",
+        "user_instruction_prefix": "Please evaluate the factual accuracy of the following text based on the reference information.\n\nReference information:\n{evaluation_criteria}\n\nText to evaluate:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "json",
+        "format": {
+          "accuracy_score": "number (1-5)",
+          "errors_found": "array of strings",
+          "is_accurate": "boolean"
+        }
+      }
+    },
+    "reasoning_evaluation": {
+      "template_id": "reasoning_evaluation",
+      "template_name": "Reasoning Quality Evaluation",
+      "target_judge_model_family": null,
+      "description": "Template for evaluating the quality of reasoning in a text",
+      "prompt_structure": {
+        "system_message": "You are an expert in critical thinking and logical reasoning. Your task is to evaluate the quality of reasoning in the given text.",
+        "user_instruction_prefix": "Please evaluate the quality of reasoning in the following text based on these criteria:\n\n{evaluation_criteria}\n\nText to evaluate:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "numeric",
+        "pattern": "\\b([1-5])\\b"
+      }
+    },
+    "summarization_quality": {
+      "template_id": "summarization_quality",
+      "template_name": "Summarization Quality",
+      "target_judge_model_family": null,
+      "description": "Template for evaluating the quality of a summary compared to the original text",
+      "prompt_structure": {
+        "system_message": "You are an expert in content summarization. Your task is to evaluate how well a summary captures the key information from the original text.",
+        "user_instruction_prefix": "Please evaluate how well the summary captures the key information from the original text.\n\nOriginal text:\n{evaluation_criteria}\n\nSummary to evaluate:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "json",
+        "format": {
+          "completeness_score": "number (1-5)",
+          "conciseness_score": "number (1-5)",
+          "accuracy_score": "number (1-5)",
+          "overall_score": "number (1-5)"
+        }
+      }
+    },
+    "hallucination_detection": {
+      "template_id": "hallucination_detection",
+      "template_name": "Hallucination Detection",
+      "target_judge_model_family": null,
+      "description": "Template for detecting hallucinations in generated text compared to source information",
+      "prompt_structure": {
+        "system_message": "You are an expert in detecting AI hallucinations. Your task is to identify any factual claims in the generated text that are not supported by or contradict the source information.",
+        "user_instruction_prefix": "Please identify any hallucinations (unsupported or contradictory claims) in the generated text compared to the source information.\n\nSource information:\n{evaluation_criteria}\n\nGenerated text to evaluate:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "json",
+        "format": {
+          "contains_hallucinations": "boolean",
+          "hallucinated_claims": "array of strings",
+          "hallucination_severity": "string (low/medium/high)"
+        }
+      }
+    },
+    "6ceac389-d631-404a-bf62-bdfc87e9b645": {
+      "template_id": "6ceac389-d631-404a-bf62-bdfc87e9b645",
+      "template_name": "Sentiment Analysis",
+      "description": "Template for analyzing sentiment in text",
+      "prompt_structure": {
+        "system_message": "You are an expert in sentiment analysis.",
+        "user_instruction_prefix": "Analyze the sentiment of the following text:\n\n{evaluation_criteria}\n\nText to analyze:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "text"
+      }
+    },
+    "2c4c4a94-ee18-494d-a32d-ed23ac166261": {
+      "template_id": "2c4c4a94-ee18-494d-a32d-ed23ac166261",
+      "template_name": "Code Quality",
+      "description": "Template for evaluating code quality",
+      "prompt_structure": {
+        "system_message": "You are an expert software developer.",
+        "user_instruction_prefix": "Evaluate this code for quality:\n\n{evaluation_criteria}\n\nCode to evaluate:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "json",
+        "format": {
+          "quality_score": "number (1-5)",
+          "readability": "number (1-5)",
+          "efficiency": "number (1-5)",
+          "best_practices": "boolean"
+        }
+      }
+    },
+    "5bf6260e-6569-45f4-8942-af0f4e021c56": {
+      "template_id": "5bf6260e-6569-45f4-8942-af0f4e021c56",
+      "template_name": "Code Quality",
+      "description": "Template for evaluating code quality",
+      "prompt_structure": {
+        "system_message": "You are an expert software developer.",
+        "user_instruction_prefix": "Evaluate this code for quality:\n\n{evaluation_criteria}\n\nCode to evaluate:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "json",
+        "format": {
+          "quality_score": "number (1-5)",
+          "readability": "number (1-5)",
+          "efficiency": "number (1-5)",
+          "best_practices": "boolean"
+        }
+      }
+    },
+    "9bf96243-a1fe-4fb5-98c6-cdff5e34edde": {
+      "template_id": "9bf96243-a1fe-4fb5-98c6-cdff5e34edde",
+      "template_name": "Code Quality",
+      "description": "Template for evaluating code quality",
+      "prompt_structure": {
+        "system_message": "You are an expert software developer.",
+        "user_instruction_prefix": "Evaluate this code for quality:\n\n{evaluation_criteria}\n\nCode to evaluate:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "json",
+        "format": {
+          "quality_score": "number (1-5)",
+          "readability": "number (1-5)",
+          "efficiency": "number (1-5)",
+          "best_practices": "boolean"
+        }
+      }
+    },
+    "668cf443-b55a-418e-a67c-4a1eec5bf0ac": {
+      "template_id": "668cf443-b55a-418e-a67c-4a1eec5bf0ac",
+      "template_name": "Code Quality",
+      "description": "Template for evaluating code quality",
+      "prompt_structure": {
+        "system_message": "You are an expert software developer.",
+        "user_instruction_prefix": "Evaluate this code for quality:\n\n{evaluation_criteria}\n\nCode to evaluate:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "json",
+        "format": {
+          "quality_score": "number (1-5)",
+          "readability": "number (1-5)",
+          "efficiency": "number (1-5)",
+          "best_practices": "boolean"
+        }
+      }
+    },
+    "546d5921-a73a-4089-86cd-f0b4f2fc873f": {
+      "template_id": "546d5921-a73a-4089-86cd-f0b4f2fc873f",
+      "template_name": "Code Quality",
+      "description": "Template for evaluating code quality",
+      "prompt_structure": {
+        "system_message": "You are an expert software developer.",
+        "user_instruction_prefix": "Evaluate this code for quality:\n\n{evaluation_criteria}\n\nCode to evaluate:\n\n",
+        "user_instruction_suffix": "\n\n{output_format_instruction}"
+      },
+      "output_parser_rules": {
+        "type": "json",
+        "format": {
+          "quality_score": "number (1-5)",
+          "readability": "number (1-5)",
+          "efficiency": "number (1-5)",
+          "best_practices": "boolean"
+        }
+      }
+    }
+  }
+}
