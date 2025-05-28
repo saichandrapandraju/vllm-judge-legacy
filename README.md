@@ -1,4 +1,4 @@
-# vLLM Judge
+# vLLM Judge [DEPRECATED]
 
 A flexible Python library for enabling LLM-as-a-judge capabilities with vLLM-hosted models. Use it directly in your application or as a standalone service.
 
